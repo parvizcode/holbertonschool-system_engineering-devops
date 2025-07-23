@@ -1,1 +1,69 @@
 
+                ┌───────────────────┐
+                │   Load Balancer    │  (HAProxy)
+                │    8.8.8.8         │
+                └───────┬───────────┘
+                        │
+        ┌───────────────┴────────────────┐
+        │                                │
+┌───────┴─────────┐              ┌───────┴─────────┐
+│   Server 1       │              │   Server 2       │
+│   - Nginx        │              │   - Nginx        │
+│   - App Server   │              │   - App Server   │
+│   - App Files    │              │   - App Files    │
+│   - MySQL (Master│              │   - MySQL (Replica)
+└──────────────────┘              └──────────────────┘
+//
+Elements Explanation
+Load Balancer (HAProxy)
+
+Distributes incoming traffic between Server 1 and Server 2.
+
+Prevents a single server from being overloaded.
+
+Improves availability and performance.
+
+Two Servers (Server 1 & Server 2)
+
+Each server has:
+
+Nginx (web server): Handles HTTP requests.
+
+Application server: Executes the website code.
+
+App files: The website’s codebase.
+
+Database: One is Primary (Master) and the other is Replica (Slave).
+
+Domain Name (foobar.com)
+
+A www record (CNAME or A record) points to the IP of the load balancer (8.8.8.8).
+//
+Load Balancer Details
+Distribution Algorithm: Round Robin (requests are sent sequentially to each server).
+
+Active-Active vs Active-Passive:
+
+Active-Active: Both servers are active and share traffic (our setup).
+
+Active-Passive: One server is active while the other is on standby.
+//
+Database Primary-Replica Cluster
+Primary Node (Master): Handles both read and write operations.
+
+Replica Node (Slave): Receives real-time data replication from the master and is used for read-only operations (improves performance).
+//
+Issues with This Infrastructure
+SPOF:
+
+If the load balancer fails, the whole system goes down.
+
+Master database failure can break the write operations.
+
+Security Issues:
+
+No firewall or HTTPS configured.
+
+No Monitoring:
+
+No system is in place to monitor traffic or server health
