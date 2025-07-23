@@ -1,1 +1,84 @@
+Web Infrastructure Design
+The web infrastructure for www.foobar.com is designed with 3 servers behind a load balancer and additional security and monitoring features.
+
+Components:
+
+1 Load Balancer (HAProxy)
+
+Distributes traffic between 2 web servers.
+
+Configured with Round Robin or Weighted Round Robin algorithm for even load distribution.
+
+Terminates SSL (HTTPS traffic).
+
+2 Web Servers (Nginx + Application Server + Codebase)
+
+Each server runs both a web server and an application server.
+
+Hosts the application files and communicates with the database server.
+
+1 Database (MySQL)
+
+Stores persistent data.
+
+Configured as Primary with Replica (Master-Slave) setup for better reliability.
+
+3 Firewalls
+
+Firewall 1: In front of the load balancer (blocks unauthorized traffic).
+
+Firewall 2 and 3: In front of each web server (filters and secures server traffic).
+
+1 SSL Certificate (HTTPS)
+
+Encrypts traffic between the client and the load balancer to secure data transmission.
+
+3 Monitoring Clients (e.g., DataDog, SumoLogic)
+
+Collect server metrics (CPU, memory, QPS, error rates).
+
+Send alerts if abnormal conditions occur.
+
+Why These Additions?
+Firewalls: Protect the infrastructure from malicious traffic and unauthorized access.
+
+HTTPS (SSL Certificate): Encrypts all data transmitted between client and server to prevent eavesdropping.
+
+Monitoring: Detects performance issues and failures early by tracking metrics and sending alerts.
+
+Monitoring Details
+Monitoring tools collect data using agents installed on each server.
+
+Metrics include CPU usage, memory, disk I/O, HTTP response times, and QPS (Queries Per Second).
+
+To monitor QPS, the agent records the number of HTTP requests handled by Nginx per second and visualizes this in dashboards (e.g., DataDog graphs).
+
+Infrastructure Issues
+SSL Termination at Load Balancer:
+
+Traffic between the load balancer and web servers is unencrypted, which can be a security issue.
+
+To fix, enable end-to-end encryption with HTTPS between all components.
+
+Single MySQL Primary:
+
+Only one server can handle write operations, creating a Single Point of Failure (SPOF).
+
+Solution: Use a failover setup with automatic promotion of Replica to Primary.
+
+Identical Components on All Servers:
+
+Running web, application, and database services on the same servers makes scaling and security harder.
+
+Better approach: Separate roles (dedicated database servers, separate app servers).
+
+Summary
+This secured and monitored web infrastructure ensures:
+
+Security via firewalls and HTTPS.
+
+High availability through load balancing and monitoring.
+
+Scalability by allowing future server additions.
+
 
