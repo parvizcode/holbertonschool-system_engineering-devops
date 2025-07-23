@@ -1,1 +1,44 @@
+# Scale Up Infrastructure - www.foobar.com
+
+## Infrastructure Overview
+This design improves scalability and reliability by splitting core components into dedicated servers and adding a second load balancer.
+
+### Components:
+1. **Load Balancers (HAProxy Cluster)**  
+   - Two load balancers are configured in an active-passive setup for high availability.  
+   - If one load balancer fails, the second one takes over without downtime.
+
+2. **Web Server (Nginx)**  
+   - Handles static content (HTML, CSS, JS).  
+   - Receives incoming HTTP/HTTPS requests from the load balancer and passes dynamic requests to the application server.
+
+3. **Application Server**  
+   - Hosts the application logic (e.g., PHP, Python, Node.js).  
+   - Processes requests from the web server and communicates with the database to return dynamic content.
+
+4. **Database Server (MySQL)**  
+   - Stores persistent data.  
+   - Separated from web and application servers to improve performance and security.
+
+5. **Additional Server**  
+   - Added to handle increased traffic or host additional application components (e.g., caching, API).
+
+---
+
+## Why Add These Elements?
+- **HAProxy Cluster**: Provides redundancy and prevents single point of failure (SPOF).  
+- **Split Components**: Each component (web, app, database) can scale independently and improves performance by isolating workloads.  
+- **Additional Server**: Allows horizontal scaling and supports growing traffic needs.
+
+---
+
+## Web Server vs. Application Server
+- **Web Server (Nginx)**:  
+  - Handles static content.  
+  - Serves files directly to users or forwards requests to the application server.
+  
+- **Application Server**:  
+  - Executes business logic and dynamic content generation.  
+  - Communicates with the database and sends processed responses back to the web server.
+
 
