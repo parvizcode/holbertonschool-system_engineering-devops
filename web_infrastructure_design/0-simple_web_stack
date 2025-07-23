@@ -1,1 +1,50 @@
+        +---------------------+
+        |      Browser        |
+        |   (User's Device)   |
+        +---------+-----------+
+                  |
+                  v
+        +---------------------+
+        |        DNS          |  ---> www.foobar.com resolves to 8.8.8.8
+        +---------+-----------+
+                  |
+                  v
+        +---------------------+
+        |      Server         | (IP: 8.8.8.8)
+        |---------------------|
+        |   Nginx (Web Server)|
+        |   Application Server|
+        |   Application Files |
+        |   MySQL Database    |
+        +---------------------+
+Explanation
+What is a server?
+A server is a computer or virtual machine that provides services or resources (like websites, files, or data) to other devices over a network.
 
+What is the role of the domain name?
+The domain name (foobar.com) is a human-readable name that maps to the server's IP address (8.8.8.8) through the DNS system, so users don’t have to remember numeric IP addresses.
+
+What type of DNS record is www in www.foobar.com?
+The www is typically an A record that points www.foobar.com to the IP address 8.8.8.8.
+
+What is the role of the web server (Nginx)?
+The web server handles incoming HTTP/HTTPS requests from users, serves static files (HTML, CSS, JS, images), and forwards dynamic requests to the application server.
+
+What is the role of the application server?
+The application server processes dynamic requests, runs the application logic, and interacts with the database when needed.
+
+What is the role of the database (MySQL)?
+The database stores, retrieves, and manages data required by the application (e.g., user information, content, transactions).
+
+What is the server using to communicate with the user’s computer?
+The server communicates via TCP/IP protocols (HTTP/HTTPS) over the internet.
+
+Issues with This Infrastructure
+SPOF (Single Point of Failure):
+If the single server goes down, the entire website becomes unavailable.
+
+Downtime during maintenance:
+Deploying new code or restarting the web server will cause downtime since there’s no backup server.
+
+Scaling issue:
+A single server cannot handle too much incoming traffic. It cannot scale horizontally without additional servers.
